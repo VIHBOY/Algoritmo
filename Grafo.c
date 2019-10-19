@@ -2,19 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include "lista.h"
-int* SeparatedNodes(char* Line){
-  int len=strlen(Line)/2;
-  int* NodeArray=malloc(sizeof(int)*len);
-  char *p=strtok (Line," ");
-  int i2=0;
-  while (p != NULL){
-    NodeArray[i2]=atoi(p);
-    p = strtok (NULL," ");
-    i2++;}
-  return NodeArray;
-}
-void AddNodes(/* arguments */) {
-  /* code */
+void AddNodes(Graph* graph, int* NodeArray, int size) {
+  int i=1;
+  for (i = 1; i < size; i++) {
+    printf("  Nodo: %d se conectara con: %d\n", NodeArray[0],NodeArray[i]);
+    addEdge(graph,NodeArray[0],NodeArray[i]);
+  }
 }
 int main(int argc, char const *argv[]){
   char Name[100]="";
@@ -31,13 +24,18 @@ int main(int argc, char const *argv[]){
   while (fgets(Line,150,fp)) {
     int nodos=atoi(Line);
     printf("Nuevo Grafo de: %d Nodos\n",nodos );
-    struct Graph* graph = createGraph(nodos);
+    Graph* graph = createGraph(nodos);
     for (int i = 0; i < nodos; i++) {
           fgets(Line,150,fp);
-          int* NodeArray=SeparatedNodes(Line);
-          AddNodes(NodeArray,graph);
+          int size=0;
+          int* NodeArray=SeparatedNodes(Line,&size);
+          AddNodes(graph,NodeArray,size);
           free(NodeArray);
     }
+    printGraph(graph);
+    DeleteNodes(graph);
+    free(graph->array);
+    free(graph);
     }
     fclose(fp);
     return 0;

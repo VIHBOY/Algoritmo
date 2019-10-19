@@ -1,20 +1,20 @@
 #ifndef _LISTA_H_INCLUDED_
 #define _LISTA_H_INCLUDED_
-
-struct AdjListNode{
+typedef struct{
     int dest;
     struct AdjListNode* next;
-};
-struct AdjList{
+}AdjListNode;
+typedef struct{
     struct AdjListNode *head;
-};
-struct Graph{
+}AdjList;
+typedef struct{
     int V;
-    struct AdjList* array;
-};
-struct AdjListNode* newAdjListNode(int dest);
-struct Graph* createGraph(int V);
-void addEdge(struct Graph* graph, int src, int dest);
-void DeleteNodes(struct Graph* graph);
-void printGraph(struct Graph* graph);
+    AdjList* array;
+}Graph;
+int* SeparatedNodes(char* Line, int* size);
+AdjListNode* newAdjListNode(int dest);
+Graph* createGraph(int V);
+void addEdge( Graph* graph, int src, int dest);
+void DeleteNodes( Graph* graph);
+void printGraph( Graph* graph);
 #endif

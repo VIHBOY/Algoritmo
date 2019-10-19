@@ -11,55 +11,62 @@
 #define MAXSTRLEN 208
 #define MAXWORD 3
 #include "lista.h"
-
-struct AdjListNode* newAdjListNode(int dest){
-    struct AdjListNode* newNode =(struct AdjListNode*) malloc(sizeof(struct AdjListNode));
+int* SeparatedNodes(char* Line,int* size){
+  int len=strlen(Line)/2;
+  *size=len;
+  printf("Len: %d\n",len );
+  int* NodeArray=malloc(sizeof(int)*len);
+  char *p=strtok (Line," ");
+  int i2=0;
+  while (p != NULL){
+    NodeArray[i2]=atoi(p);
+    p = strtok (NULL," ");
+    i2++;}
+  return NodeArray;
+}
+ AdjListNode* newAdjListNode(int dest){
+    AdjListNode* newNode =(AdjListNode*) malloc(sizeof(AdjListNode));
     newNode->dest = dest;
     newNode->next = NULL;
-    return newNode;
-}
-struct Graph* createGraph(int V){
-    struct Graph* graph =(struct Graph*) malloc(sizeof(struct Graph));
+    return newNode;}
+Graph* createGraph(int V){
+     Graph* graph =( Graph*) malloc(sizeof(Graph));
     graph->V = V;
-    graph->array =
-      (struct AdjList*) malloc(V * sizeof(struct AdjList));
+    graph->array = (AdjList*) malloc(V * sizeof(AdjList));
     int i;
     for (i = 0; i < V; ++i)
         graph->array[i].head = NULL;
     return graph;
 }
-void addEdge(struct Graph* graph, int src, int dest){
-    struct AdjListNode* newNode = newAdjListNode(dest);
-    newNode->next = graph->array[src].head;
-    graph->array[src].head = newNode;
-    newNode = newAdjListNode(src);
-    newNode->next = graph->array[dest].head;
-    graph->array[dest].head = newNode;
+void addEdge(Graph* graph, int src, int dest){
+    AdjListNode* newNode = newAdjListNode(dest);
+    newNode->next=graph->array[src].head;
+    graph->array[src].head = (struct AdjListNode*)newNode;
 }
-void DeleteNodes(struct Graph* graph){
+void DeleteNodes(Graph* graph){
     int v;
-    for (v = 0; v < graph->V; ++v)
+    for (v = 1; v < graph->V+1; ++v)
     {
-        struct AdjListNode* pCrawl = graph->array[v].head;
+        AdjListNode* pCrawl =(AdjListNode*) graph->array[v].head;
         while (pCrawl!=NULL)
         {
-            struct AdjListNode* pCrawl2= pCrawl;
-            pCrawl = pCrawl->next;
+            AdjListNode* pCrawl2= pCrawl;
+            pCrawl = (AdjListNode*)pCrawl->next;
             free(pCrawl2);
         }
         printf("\n");
     }
 }
-void printGraph(struct Graph* graph){
+void printGraph(Graph* graph){
     int v;
-    for (v = 0; v < graph->V; ++v)
+    for (v = 1; v < graph->V+1; ++v)
     {
-        struct AdjListNode* pCrawl = graph->array[v].head;
+        AdjListNode* pCrawl = (AdjListNode*)graph->array[v].head;
         printf("\n Adjacency list of vertex %d\n head ", v);
         while (pCrawl)
         {
             printf("-> %d", pCrawl->dest);
-            pCrawl = pCrawl->next;
+            pCrawl = (AdjListNode*)pCrawl->next;
         }
         printf("\n");
     }
