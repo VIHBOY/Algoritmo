@@ -5,6 +5,7 @@ typedef struct{
     struct AdjListNode* next;
 }AdjListNode;
 typedef struct{
+    int nodem;
     struct AdjListNode *head;
 }AdjList;
 typedef struct{
@@ -17,4 +18,7 @@ Graph* createGraph(int V);
 void addEdge( Graph* graph, int src, int dest);
 void DeleteNodes( Graph* graph);
 void printGraph( Graph* graph);
+int ContarCaminos(Graph* graph,int inicio, int destino,int pathcount);
+void ContarCaminosAuxiliar(Graph* graph, int inicio, int destino,int* visited,int* pathcount);
+void AddNodes(Graph* graph, int* NodeArray, int size) ;
 #endif

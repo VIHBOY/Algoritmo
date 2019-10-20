@@ -29,7 +29,7 @@ AdjListNode* newAdjListNode(int dest){
     newNode->next = NULL;
     return newNode;}
 Graph* createGraph(int V){
-    Graph* graph =( Graph*)malloc(sizeof(Graph));
+    Graph* graph =( Graph*) malloc(sizeof(Graph));
     graph->V=V;
     graph->array=(AdjList*)malloc(V*sizeof(AdjList));
     int i;
@@ -44,7 +44,7 @@ void addEdge(Graph* graph, int src, int dest){
 }
 void DeleteNodes(Graph* graph){
     int v;
-    for (v = 0; v < graph->V; ++v)
+    for (v = 1; v < graph->V+1; ++v)
     {
         AdjListNode* pCrawl =(AdjListNode*) graph->array[v].head;
         while (pCrawl!=NULL)
@@ -58,10 +58,10 @@ void DeleteNodes(Graph* graph){
 }
 void printGraph(Graph* graph){
     int v;
-    for (v = 0; v < graph->V; ++v)
+    for (v = 1; v < graph->V+1; ++v)
     {
         AdjListNode* pCrawl = (AdjListNode*)graph->array[v].head;
-        printf("\n Adjacency list of vertex %d\n head ", v+1);
+        printf("\n Adjacency list of vertex %d\n head ", v);
         while (pCrawl)
         {
             printf("-> %d", pCrawl->dest);
@@ -74,29 +74,31 @@ void AddNodes(Graph* graph, int* NodeArray, int size) {
   int i=1;
   for (i = 1; i < size; i++) {
     printf("  Nodo: %d se conectara con: %d\n", NodeArray[0],NodeArray[i]);
-    addEdge(graph,NodeArray[0]-1,NodeArray[i]);
+    addEdge(graph,NodeArray[0],NodeArray[i]);
   }
 }
 void ContarCaminosAuxiliar(Graph* graph, int inicio, int destino,int* visited,int* pathcount){
-  visited[inicio-1]=1;
+  visited[inicio]=1;
+  printf("inicio:%d\n",inicio );
   if (inicio==destino) {
+    printf("AcA\n" );
     *pathcount=*pathcount+1;
   }
   else{
-    AdjListNode* pCrawl =(AdjListNode*) graph->array[inicio-1].head;
+    AdjListNode* pCrawl =(AdjListNode*) graph->array[inicio].head;
     while (pCrawl!=NULL)
     {
-      if (!visited[pCrawl->dest-1]) {
+      if (!visited[pCrawl->dest]) {
           ContarCaminosAuxiliar(graph,pCrawl->dest,destino,visited,pathcount);
       }
       pCrawl = (AdjListNode*)pCrawl->next;
     }
   }
-  visited[inicio-1]=0;
+  visited[inicio]=0;
 }
 int ContarCaminos(Graph* graph,int inicio, int destino,int pathcount){
-  int* visited=malloc(sizeof(int)*graph->V);
-  for (int i = 0; i < graph->V; i++) {
+  int* visited=malloc(sizeof(int)*graph->V+1);
+  for (int i = 0; i < graph->V+1; i++) {
     visited[i]=0;}
   ContarCaminosAuxiliar(graph,inicio,destino,visited,&pathcount);
   free(visited);

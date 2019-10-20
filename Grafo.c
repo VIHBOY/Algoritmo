@@ -2,12 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include "lista.h"
-void AddNodes(Graph* graph, int* NodeArray, int size) {
-  int i=1;
-  for (i = 1; i < size; i++) {
-    printf("  Nodo: %d se conectara con: %d\n", NodeArray[0],NodeArray[i]);
-    addEdge(graph,NodeArray[0],NodeArray[i]);
+int* MakeArrayNodes(Graph* graph){
+  int* ArrayNodes=malloc(sizeof(int)*graph->V);
+  for (int i = 0; i < graph->V; i++) {
+    ArrayNodes[i]=graph->array[i].nodem;
   }
+  return ArrayNodes;
 }
 int main(int argc, char const *argv[]){
   char Name[100]="";
@@ -29,10 +29,22 @@ int main(int argc, char const *argv[]){
           fgets(Line,150,fp);
           int size=0;
           int* NodeArray=SeparatedNodes(Line,&size);
+          graph->array[i].nodem=NodeArray[0];
           AddNodes(graph,NodeArray,size);
           free(NodeArray);
     }
-    printGraph(graph);
+    int pathcount=0;
+    int* ArrayNodes=MakeArrayNodes(graph);
+    for (int i = 0; i < graph->V; i++) {
+      for (int i2 = 1; i2 < graph->V; i2++) {
+        if (i2!=i) {
+          if (ContarCaminos(graph,ArrayNodes[i],ArrayNodes[i2],pathcount)==1) {
+            printf("Caminos posibles entre: %d y %d son: %d\n",ArrayNodes[i],ArrayNodes[i2],ContarCaminos(graph,ArrayNodes[i],ArrayNodes[i2],pathcount));
+          }
+        }
+      }
+    }
+    free(ArrayNodes);
     DeleteNodes(graph);
     free(graph->array);
     free(graph);
